@@ -1,24 +1,7 @@
 # wife
 
-## Project setup
-```
-yarn install
-```
+What is font-end
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+Based on [this](https://what-is-fe.gitee.io/)
 
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+See [wife.wiki](https://wife.wiki).
