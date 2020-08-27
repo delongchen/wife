@@ -1,8 +1,8 @@
 <template>
   <main>
-    <aside>aside</aside>
+    <side-bar/>
     <article>
-      <div style="margin-left: 20%; margin-right: 20%">
+      <div class="d-container">
         <router-view/>
       </div>
     </article>
@@ -10,8 +10,13 @@
 </template>
 
 <script>
+import SideBar from './SideBar'
+
 export default {
-  name: "MainContainer"
+  name: "MainContainer",
+  components: {
+    SideBar
+  }
 }
 </script>
 
@@ -24,16 +29,16 @@ main {
   left: 0;
 }
 
-aside {
-  background: #2c3e50;
-  float: left;
-  height: 100%;
-  width: 20%;
-}
-
 article {
   background: aqua;
   margin-left: 20%;
   height: 100%;
+}
+
+.d-container {
+  background: white;
+  margin-left: 20%;
+  margin-right: 20%;
+  height: 100%
 }
 </style>

@@ -12,11 +12,12 @@ export default new VueRouter({
     {
       path: '/',
       component: WifeMainLayout,
-      redirect: '/test',
+      redirect: '/wife',
       children: [
         {
-          path: '/test',
-          component: TestPage
+          path: '/wife',
+          component: TestPage,
+          children: []
         }
       ]
     }
