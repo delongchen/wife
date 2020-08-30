@@ -13,7 +13,9 @@ const textService = {
   },
   mutations: {
     SET_TEXTS(state, data) { state.texts = data },
-    SET_NODE(state, node) { state.node = node }
+    SET_NODE(state, node) {
+      if (state.node !== node) state.node = node
+    }
   },
   actions: {
     GetTexts({ commit }) {

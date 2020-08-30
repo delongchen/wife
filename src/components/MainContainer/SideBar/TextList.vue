@@ -5,6 +5,7 @@ export default {
   name: "TextList",
   data() {
     return {
+      openKeys: []
     }
   },
   props: {
@@ -23,7 +24,9 @@ export default {
           items.push(this.textsWrapper(child[i], key + i))
         }
         return(
-          <a-sub-menu key={key}>
+          <a-sub-menu
+            vOn:titleClick={this.titleClickHandler}
+            key={key}>
             <span slot="title">
               <a-icon type="qq"/>
               <span>{title}</span>
@@ -35,9 +38,20 @@ export default {
         return(<a-menu-item key={key}>{title}</a-menu-item>)
       }
     },
-    clickHandler({key}) {
+    setNode(key) {
       this.$store.commit('textService/SET_NODE', key)
-    }
+    },
+    clickHandler({key}) {
+      this.setNode(key)
+    },
+    titleClickHandler({key}) {
+      this.setNode(key)
+    },
+    openChangeHandler(keys) {
+      this.openKeys = keys
+      console.log(keys)
+    },
+    showItem(o) {console.log(o)}
   },
   computed: {
     ...mapGetters('textService', ['TEXTS', 'TEXT_BY_POSITION'])
@@ -48,7 +62,9 @@ export default {
         mode="inline"
         theme="dark"
         inlineCollapsed={this.collapsed}
+        openKeys={this.openKeys}
         vOn:click={this.clickHandler}
+        vOn:openChange={this.openChangeHandler}
       >
         {...this.TEXTS.children.map((item, key) => this.textsWrapper(item, '' + key))}
       </a-menu>
