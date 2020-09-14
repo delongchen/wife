@@ -1,6 +1,6 @@
 <template>
   <aside>
-    <h1 style="color: white; text-align: center">What is FE
+    <h1 style="color: white; text-align: center">{{ $store.getters['textService/TEXTS']['title'] }}
     <button @click="sw" style="color: #2c3e50">switch</button>
     </h1>
     <text-list :collapsed="showList"/>

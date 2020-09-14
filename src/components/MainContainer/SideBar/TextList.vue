@@ -1,5 +1,5 @@
 <script>
-import {mapGetters} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
   name: "TextList",
@@ -15,13 +15,15 @@ export default {
     }
   },
   methods: {
+    ...mapActions('textService', ['GetTexts']),
+    ...mapMutations('textService', ['SET_NODE', 'SET_NODE_PROPS']),
     textsWrapper(node, key) {
       const {title} = node
       const child = node.children
       if (Array.isArray(child)) {
         const items = []
         for (let i = 0; i < child.length; i++) {
-          items.push(this.textsWrapper(child[i], key + i))
+          items.push(this.textsWrapper(child[i], `${key}.${i}`))
         }
         return(
           <a-sub-menu
@@ -39,7 +41,16 @@ export default {
       }
     },
     setNode(key) {
-      this.$store.commit('textService/SET_NODE', key)
+      return new Promise((resolve, reject) => {
+        this.SET_NODE(key)
+        if (this.NODE.children === undefined)
+          this.GetTexts(key).then(value => {
+            const newChildren = value.children
+            this.SET_NODE_PROPS(node => {
+              node.children = newChildren === undefined ? null : newChildren
+            })
+          }).catch(reason => reject(reason))
+      })
     },
     clickHandler({key}) {
       this.setNode(key)
@@ -49,12 +60,10 @@ export default {
     },
     openChangeHandler(keys) {
       this.openKeys = keys
-      console.log(keys)
-    },
-    showItem(o) {console.log(o)}
+    }
   },
   computed: {
-    ...mapGetters('textService', ['TEXTS', 'TEXT_BY_POSITION'])
+    ...mapGetters('textService', ['TEXTS', 'TEXT_BY_POSITION', 'NODE'])
   },
   render() {
     return(

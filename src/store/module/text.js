@@ -1,40 +1,59 @@
-import { getData } from "@/api";
+import {getText} from "@/api";
 
 const defaultNode = {
   title: 'wife',
   content: 'i am content'
 }
 
+const nodeCache = {}
+
+let nowNode = null
+
 const textService = {
   namespaced: true,
   state: {
-    texts: { title: 'i am title', children: [] },
+    texts: {title: 'i am title', children: []},
     node: null
   },
   mutations: {
-    SET_TEXTS(state, data) { state.texts = data },
-    SET_NODE(state, node) {
-      if (state.node !== node) state.node = node
+    SET_TEXTS(state, data) {
+      state.texts = data
+    },
+    SET_NODE(state, key) {
+      if (state.node !== key) {
+        state.node = key
+        const cachedNode = nodeCache[key]
+        if (cachedNode === undefined) {
+          const now = findNode(state.texts, key)
+          if (now !== null) {
+            nowNode = now
+            nodeCache[key] = now
+          }
+        } else {
+          nowNode = cachedNode
+        }
+      }
+    },
+    SET_NODE_PROPS(state, cb) {
+      cb(nowNode)
     }
   },
   actions: {
-    GetTexts({ commit }) {
+    GetTexts(context, path) {
       return new Promise((resolve, reject) => {
-        getData().then(value => {
-          commit('SET_TEXTS', value)
-          resolve(value)
+        getText(path).then(data => {
+          resolve(data.data)
         }).catch(reason => reject(reason))
       })
     }
   },
   getters: {
     TEXTS: state => state.texts,
-    NODE: (state, getters) => {
-      if (state.node === null) return defaultNode
-      return getters.TEXT_BY_POSITION(state.node)
+    NODE: (state) => {
+      return state.node ? nowNode : defaultNode
     },
     TEXT_BY_POSITION: state => position => {
-      position = position.split('')
+      position = position.split('.')
       let ret = state.texts
       while (position.length) {
         ret = ret.children[position.shift()]
@@ -42,6 +61,16 @@ const textService = {
       return ret
     }
   }
+}
+
+function findNode(node, path) {
+  path = path.split('.')
+  let ret = node
+  while (path.length) {
+    ret = ret.children[path.shift()]
+    if (ret === undefined) return null
+  }
+  return ret
 }
 
 export { textService }
