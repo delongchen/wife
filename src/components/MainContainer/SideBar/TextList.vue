@@ -1,5 +1,6 @@
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
+import { IDDB } from "@/core/db/indexeddb";
 
 export default {
   name: "TextList",
@@ -17,27 +18,24 @@ export default {
   methods: {
     ...mapActions('textService', ['GetTexts']),
     ...mapMutations('textService', ['SET_NODE', 'SET_NODE_PROPS']),
-    textsWrapper(node, key) {
-      const {title} = node
+    textsWrapper(node) {
+      const {title, id} = node
       const child = node.children
+
       if (Array.isArray(child)) {
-        const items = []
-        for (let i = 0; i < child.length; i++) {
-          items.push(this.textsWrapper(child[i], `${key}.${i}`))
-        }
         return(
           <a-sub-menu
             vOn:titleClick={this.titleClickHandler}
-            key={key}>
+            key={id}>
             <span slot="title">
               <a-icon type="qq"/>
               <span>{title}</span>
             </span>
-            {...items}
+            {...child.map(item => this.textsWrapper(item))}
           </a-sub-menu>
         )
       } else {
-        return(<a-menu-item key={key}>{title}</a-menu-item>)
+        return(<a-menu-item key={id}>{title}</a-menu-item>)
       }
     },
     setNode(key) {
@@ -65,6 +63,9 @@ export default {
   computed: {
     ...mapGetters('textService', ['TEXTS', 'TEXT_BY_POSITION', 'NODE'])
   },
+  beforeMount() {
+    IDDB.add(nodes)
+  },
   render() {
     return(
       <a-menu
@@ -75,7 +76,7 @@ export default {
         vOn:click={this.clickHandler}
         vOn:openChange={this.openChangeHandler}
       >
-        {...this.TEXTS.children.map((item, key) => this.textsWrapper(item, '' + key))}
+        {...this.TEXTS.children.map(item => this.textsWrapper(item))}
       </a-menu>
     )
   }

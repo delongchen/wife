@@ -1,20 +1,16 @@
 <template>
   <div class="text-content">
-    <text-content v-if="NODE.children" :node="NODE"/>
-    <no-text-content v-else/>
+    <h1>{{ NODE.title }}</h1>
+    <p>{{ NODE.content }}</p>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import TextContent from './TextContent'
-import NoTextContent from './NoTextContent'
 
 export default {
   name: "index",
   components: {
-    TextContent,
-    NoTextContent
   },
   data() {
     return {
