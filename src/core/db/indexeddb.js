@@ -1,41 +1,50 @@
-function MyIndexedDb() {
-  this.config = {
-    name: 'wife',
-    tableName: 'texts'
-  }
-}
+const _instance = {
+  dbName: 'wife',
+  storeName: 'texts',
+  add(data) {
+    return new Promise((resolve, reject) => {
+      getDb.then(db => {
+        const transaction = db.transaction(_instance.storeName, 'readwrite')
+        transaction.onerror = reject
+        transaction.oncomplete = resolve
 
-MyIndexedDb.prototype.add = function (data) {
-  const {name, tableName} = this.config
-  const openReq = indexedDB.open(name)
-  openReq.onupgradeneeded = function () {
-    const db = openReq.result
-    if (!db.objectStoreNames.contains(tableName)) {
-      const store = db.createObjectStore(tableName, {
-        autoIncrement: true
-      })
-      store.createIndex('id', 'id', { unique: true })
-    }
-  }
-
-  openReq.onsuccess = function () {
-    const db = openReq.result
-    if (Array.isArray(data)) {
-      const t = db.transaction(tableName, 'readwrite')
-      t.onerror = ev => {
-        console.log(ev.target.error)
-      }
-      const store = t.objectStore(tableName)
-      data.forEach(item => {
-        const req = store.add(item)
-        req.onerror = ev => {
-          console.log(ev.target.error)
+        const store = transaction.objectStore(_instance.storeName)
+        if (Array.isArray(data)) {
+          data.forEach(item => {
+            store.add(item).onerror = reject
+          })
+        } else {
+          store.add(data).onerror = reject
         }
       })
-    }
+    })
   }
 }
 
-const _instance = new MyIndexedDb()
+const getDb = new Promise((resolve, reject) => {
+  if (_instance.db) return _instance.db
+
+  const {dbName, storeName} = _instance
+  const request = indexedDB.open(dbName)
+
+  request.onupgradeneeded = ev => {
+    const db = ev.target.result
+    if (db.objectStoreNames.contains(storeName)) {
+      db.deleteObjectStore(storeName)
+    }
+    const store = db.createObjectStore(storeName, { autoIncrement: true })
+    store.createIndex('id', 'id', { unique: false })
+  }
+
+  request.onerror = ev => {
+    reject(ev)
+  }
+
+  request.onsuccess = ev => {
+    const db = ev.target.result
+    _instance.db = db
+    resolve(db)
+  }
+});
 
 export default _instance

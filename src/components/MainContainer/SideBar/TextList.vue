@@ -18,7 +18,7 @@ export default {
     ...mapActions('textService', ['GetTexts']),
     ...mapMutations('textService', ['SET_NODE', 'SET_NODE_PROPS']),
     textsWrapper(node) {
-      const {title, id} = node
+      const {title, id, icon} = node
       const child = node.children
 
       if (Array.isArray(child)) {
@@ -27,7 +27,7 @@ export default {
             vOn:titleClick={this.titleClickHandler}
             key={id}>
             <span slot="title">
-              <a-icon type="qq"/>
+              <a-icon type={icon || 'qq'}/>
               <span>{title}</span>
             </span>
             {...child.map(this.textsWrapper)}
