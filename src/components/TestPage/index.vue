@@ -20,7 +20,9 @@ export default {
     ...mapGetters('textService', ['NODE'])
   },
   methods: {
-
+    add() {
+      this.$db.add()
+    }
   }
 }
 </script>

@@ -1,6 +1,5 @@
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
-import { IDDB } from "@/core/db/indexeddb";
 
 export default {
   name: "TextList",
@@ -31,7 +30,7 @@ export default {
               <a-icon type="qq"/>
               <span>{title}</span>
             </span>
-            {...child.map(item => this.textsWrapper(item))}
+            {...child.map(this.textsWrapper)}
           </a-sub-menu>
         )
       } else {
@@ -63,9 +62,6 @@ export default {
   computed: {
     ...mapGetters('textService', ['TEXTS', 'TEXT_BY_POSITION', 'NODE'])
   },
-  beforeMount() {
-    IDDB.add(nodes)
-  },
   render() {
     return(
       <a-menu
@@ -76,7 +72,7 @@ export default {
         vOn:click={this.clickHandler}
         vOn:openChange={this.openChangeHandler}
       >
-        {...this.TEXTS.children.map(item => this.textsWrapper(item))}
+        {...this.TEXTS.children.map(this.textsWrapper)}
       </a-menu>
     )
   }

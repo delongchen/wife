@@ -3,8 +3,19 @@ import request from "@/utils/request";
 const GET = 'get'
 const POST = 'post'
 
+function ip_maker(num) {
+  const IP_PRE = ['http://192.168.114.', ':3000']
+  return IP_PRE.join('' + num)
+}
+
+const IP = {
+  PI: ip_maker(51),
+  MAC: ip_maker(16),
+  LOCALHOST: 'http://localhost:3000'
+}
+
 const api = {
-  GetData: 'http://localhost:3000',
+  GetData: IP.PI,
   Texts: '/text'
 }
 

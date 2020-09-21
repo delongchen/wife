@@ -1,10 +1,8 @@
-const dbConfig = {
-  name: 'wife',
-  tableName: 'texts'
-}
-
-function MyIndexedDb(config = dbConfig) {
-  this.config = config
+function MyIndexedDb() {
+  this.config = {
+    name: 'wife',
+    tableName: 'texts'
+  }
 }
 
 MyIndexedDb.prototype.add = function (data) {
@@ -14,11 +12,12 @@ MyIndexedDb.prototype.add = function (data) {
     const db = openReq.result
     if (!db.objectStoreNames.contains(tableName)) {
       const store = db.createObjectStore(tableName, {
-        autoIncrement: true,
+        autoIncrement: true
       })
       store.createIndex('id', 'id', { unique: true })
     }
   }
+
   openReq.onsuccess = function () {
     const db = openReq.result
     if (Array.isArray(data)) {
@@ -37,4 +36,6 @@ MyIndexedDb.prototype.add = function (data) {
   }
 }
 
-export const IDDB = new MyIndexedDb(dbConfig)
+const _instance = new MyIndexedDb()
+
+export default _instance

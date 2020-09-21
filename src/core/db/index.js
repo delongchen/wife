@@ -1,13 +1,10 @@
-const dbReq = window.indexedDB.open('wife')
+import dbService from './indexeddb'
 
-dbReq.onupgradeneeded = ev => {
-  console.log('upgrade: ', ev.newVersion)
-}
-
-dbReq.onsuccess = ev => {
-  console.log('success: ', ev)
-}
-
-dbReq.onerror = () => {
-  console.log('db err')
+export default {
+  vm: {},
+  install(Vue) {
+    Object.defineProperties(Vue.prototype, {
+      $db: { get: () => dbService }
+    })
+  }
 }
