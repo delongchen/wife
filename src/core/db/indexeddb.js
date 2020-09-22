@@ -21,7 +21,7 @@ const _instance = {
   }
 }
 
-const getDb = new Promise((resolve, reject) => {
+export const getDb = new Promise((resolve, reject) => {
   if (_instance.db) return _instance.db
 
   const {dbName, storeName} = _instance
@@ -36,14 +36,10 @@ const getDb = new Promise((resolve, reject) => {
     store.createIndex('id', 'id', { unique: false })
   }
 
-  request.onerror = ev => {
-    reject(ev)
-  }
+  request.onerror = reject
 
   request.onsuccess = ev => {
-    const db = ev.target.result
-    _instance.db = db
-    resolve(db)
+    resolve(_instance.db = ev.target.result)
   }
 });
 

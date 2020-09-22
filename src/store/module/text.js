@@ -39,9 +39,9 @@ const textService = {
     }
   },
   actions: {
-    GetTexts(context, path) {
+    GetTexts(context, params) {
       return new Promise((resolve, reject) => {
-        getText(path).then(data => {
+        getText(params).then(data => {
           resolve(data.data)
         }).catch(reason => reject(reason))
       })

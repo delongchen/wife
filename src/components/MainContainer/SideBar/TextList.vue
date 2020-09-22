@@ -40,13 +40,16 @@ export default {
     setNode(key) {
       return new Promise((resolve, reject) => {
         this.SET_NODE(key)
-        if (this.NODE.children === undefined)
-          this.GetTexts(key).then(value => {
+        if (this.NODE.children === undefined) {
+          const { v } = this.NODE
+          this.GetTexts({path: key, v}).then(value => {
+            if (value.v !== v) {/* TODO version different */}
             const newChildren = value.children
             this.SET_NODE_PROPS(node => {
               node.children = newChildren === undefined ? null : newChildren
             })
           }).catch(reason => reject(reason))
+        }
       })
     },
     clickHandler({key}) {

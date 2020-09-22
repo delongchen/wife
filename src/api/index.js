@@ -3,10 +3,7 @@ import request from "@/utils/request";
 const GET = 'get'
 const POST = 'post'
 
-function ip_maker(num) {
-  const IP_PRE = ['http://192.168.114.', ':3000']
-  return IP_PRE.join('' + num)
-}
+const ip_maker = num => ['http://192.168.114.', ':3000'].join('' + num)
 
 const IP = {
   PI: ip_maker(51),
@@ -15,7 +12,7 @@ const IP = {
 }
 
 const api = {
-  GetData: IP.PI,
+  GetData: IP.LOCALHOST,
   Texts: '/text'
 }
 
@@ -30,10 +27,10 @@ export function getData(data) {
   })
 }
 
-export function getText(path) {
+export function getText(params) {
   return request({
     url: api.GetData + api.Texts,
     method: GET,
-    params: { path }
+    params
   })
 }
