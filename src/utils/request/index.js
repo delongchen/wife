@@ -18,7 +18,6 @@ const errorHandler = error => {
       })
     }
   }
-
   return Promise.reject(error)
 }
 
@@ -26,14 +25,6 @@ request.interceptors.response.use(
   response => response.data,
     errorHandler
 )
-
-request.interceptors.request.use(config => {
-  notification.error({
-    message: config.params,
-    description: 'error'
-  })
-  return config
-})
 
 const installer = {
   vm: {},

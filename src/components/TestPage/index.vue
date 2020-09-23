@@ -2,16 +2,19 @@
   <div class="text-content">
     <h1>{{ NODE.title }}</h1>
     <p>{{ NODE.content }}</p>
-    <button @click="add"><h1>click</h1></button>
+    <description-list :li="NODE.descriptions"/>
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import DescriptionList from './DescriptionList'
 
 export default {
   name: "TestPage",
-  components: {},
+  components: {
+    DescriptionList
+  },
   data() {
     return {
       count: 1
@@ -21,16 +24,6 @@ export default {
     ...mapGetters('textService', ['NODE'])
   },
   methods: {
-    add() {
-      this.$db.add([
-        {id: 'test', title: 1},
-        {id: 'test', title: 2},
-      ]).then(() => {
-        console.log('okkk')
-      }).catch(reason => {
-        console.log(reason.target.error)
-      })
-    }
   }
 }
 </script>

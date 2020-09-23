@@ -12,7 +12,7 @@ const IP = {
 }
 
 const api = {
-  GetData: IP.LOCALHOST,
+  GetData: IP.PI,
   Texts: '/text'
 }
 

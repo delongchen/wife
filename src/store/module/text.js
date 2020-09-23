@@ -2,7 +2,8 @@ import {getText} from "@/api";
 
 const defaultNode = {
   title: 'wife',
-  content: 'i am content'
+  content: 'i am content',
+  descriptions: []
 }
 
 const nodeCache = {}
