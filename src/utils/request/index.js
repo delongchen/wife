@@ -1,4 +1,5 @@
 import axios from 'axios'
+import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 
 const request = axios.create({
@@ -6,10 +7,33 @@ const request = axios.create({
   timeout: 6000 // 请求超时时间
 })
 
+const errorHandler = error => {
+  const res = error.response
+  if (res) {
+    const data = res.data
+    if (!data.status) {
+      notification.error({
+        message: 'error',
+        description: data.msg
+      })
+    }
+  }
+
+  return Promise.reject(error)
+}
+
 request.interceptors.response.use(
-  response => response.data
-,error => Promise.reject(error)
+  response => response.data,
+    errorHandler
 )
+
+request.interceptors.request.use(config => {
+  notification.error({
+    message: config.params,
+    description: 'error'
+  })
+  return config
+})
 
 const installer = {
   vm: {},
