@@ -17,7 +17,6 @@ export default {
   },
   props: {
     li: {
-      type: Array,
       required: true
     }
   }

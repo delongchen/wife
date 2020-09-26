@@ -5,8 +5,24 @@
 </template>
 
 <script>
+import ModalContent from "@/components/TestPage/DescriptionList/ModalContent";
+
 export default {
-name: "DesTools"
+  name: "DesTools",
+  methods: {
+    add() {
+      this.$dialog(ModalContent,
+        {
+
+        },
+        {
+          title: 'new',
+          width: 700,
+          centered: true,
+          maskClosable: false
+        })
+    }
+  }
 }
 </script>
 
