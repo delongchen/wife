@@ -30,7 +30,6 @@ main {
 }
 
 article {
-  background: aqua;
   margin-left: 20%;
   height: 100%;
 }

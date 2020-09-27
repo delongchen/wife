@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button type="dashed" style="width: 100%" icon="plus">add</a-button>
+    <a-button type="dashed" style="width: 100%" icon="plus" @click="add">add</a-button>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
         },
         {
           title: 'new',
-          width: 700,
+          width: 1200,
           centered: true,
           maskClosable: false
         })

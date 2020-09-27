@@ -1,7 +1,7 @@
 <template>
   <aside>
-    <h1 style="color: white; text-align: center">{{ $store.getters['textService/TEXTS']['title'] }}
-    <button @click="sw" style="color: #2c3e50">switch</button>
+    <h1 style="color: #2c3e50; text-align: center">{{ TEXTS.title }}
+      <button @click="sw" style="color: #2c3e50">col</button>
     </h1>
     <text-list :collapsed="showList"/>
   </aside>
@@ -9,7 +9,7 @@
 
 <script>
 import TextList from "./TextList";
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: "SideBar",
@@ -22,6 +22,9 @@ export default {
       this.showList = !this.showList
     }
   },
+  computed: {
+    ...mapGetters('textService', ['TEXTS'])
+  },
   data() {
     return {
       showList: false
@@ -32,8 +35,6 @@ export default {
 
 <style scoped>
   aside {
-    background: #2c3e50;
-    color: white;
     float: left;
     height: 100%;
     width: 20%;

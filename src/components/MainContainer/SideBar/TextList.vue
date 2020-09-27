@@ -48,7 +48,7 @@ export default {
             this.SET_NODE_PROPS(node => {
               node.children = newChildren === undefined ? null : newChildren
             })
-          }).catch(reason => reject(reason))
+          }).catch(reject)
         }
       })
     },
