@@ -13,6 +13,13 @@ plugins.push(['import', {
   'style': true // `style: true` 会加载 less 文件
 }])
 
+plugins.push(["prismjs", {
+  "languages": ["javascript", "css", "markup"],
+  "plugins": ["line-numbers"],
+  "theme": "twilight",
+  "css": true
+}])
+
 module.exports = {
   presets: [
     '@vue/cli-plugin-babel/preset'

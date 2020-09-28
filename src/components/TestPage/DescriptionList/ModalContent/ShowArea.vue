@@ -1,10 +1,14 @@
 <template>
   <div>
-    {{ content }}
+    <div v-html="content"></div>
+    <button @click="p">p</button>
+    <div id="prism-container"></div>
   </div>
 </template>
 
 <script>
+import Prism from 'prismjs'
+
 export default {
   name: "ShowArea",
   props: {
@@ -12,6 +16,25 @@ export default {
       required: true,
       type: String
     }
+  },
+  data() {
+    return {
+      container: null
+    }
+  },
+  methods: {
+    p() {
+      Prism.highlightAll()
+      Prism.highlightAllUnder()
+    }
+  },
+  watch: {
+    content() {
+      Prism.highlightAllUnder(this.container)
+    }
+  },
+  mounted() {
+    this.container = document.getElementById('prism-container')
   }
 }
 </script>
