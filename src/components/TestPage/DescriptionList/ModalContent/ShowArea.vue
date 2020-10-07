@@ -24,8 +24,7 @@ export default {
   },
   methods: {
     p() {
-      Prism.highlightAll()
-      Prism.highlightAllUnder()
+
     }
   },
   watch: {
